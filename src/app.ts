@@ -1,6 +1,8 @@
 import express from 'express'
+import uploadRoutes from './routes/upload.routes'
 
 const app = express()
-const algo = ""
+
+app.use(uploadRoutes)
 
 export default app
