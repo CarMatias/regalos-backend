@@ -1,9 +1,9 @@
 # regalos-backend
 
-Para iniciar el proyecto ejcutar
+## Para iniciar el proyecto ejcutar
 
-{% filename %}npm install{% endfilename %}
+`npm install`
 
-luego ejecutar
+## luego ejecutar
 
-{% filename %}npm run dev{% endfilename %}
+`npm run dev`
