@@ -1,9 +1,9 @@
 # regalos-backend
 
-## Para iniciar el proyecto ejcutar
+### Para installar dependencias
 
 `npm install`
 
-## luego ejecutar
+### luego ejecutar
 
 `npm run dev`
