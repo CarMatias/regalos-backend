@@ -1,5 +1,6 @@
 import { Router, Request } from 'express'
 import  UploadGiftService  from '../services/uploadGiftsService'
+import uploadQuestionService from '../services/uploadQuestionService'
 
 const router = Router()
 var bodyParser = require('body-parser')
@@ -20,6 +21,17 @@ router.post('/uploadgift',cors(corsOptions),async (req, res)=>{
       res.send(newGift)
     }else{
       res.send("Debe enviar un name, image y tag como parametros")
+    }
+  })
+
+  router.get('/uploadquestion',cors(corsOptions),async (req, res)=>{
+    const question = req.body.question
+    const image = req.body.image
+    if(question != null && image != null ){
+      const newQuestion = await uploadQuestionService.uploadQuestion(question,image)
+      res.send(newQuestion)
+    }else{
+      res.send("Debe enviar una question a image como parametros")
     }
   })
   export default router
