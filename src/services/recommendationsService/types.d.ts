@@ -1,6 +1,7 @@
 export interface Regalo{
     id:number,
     name:string,
+    image:string,
     etiqueta:Etiqueta[]
 }
 

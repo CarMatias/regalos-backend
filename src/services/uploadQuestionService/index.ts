@@ -10,7 +10,7 @@ class UploadQuestionService{
         ])
         return data != null ? "Se ha cargado correctamente la pregunta!" : error.message
     }else{
-        return "La pregunta debe esta en formato ¿ Pregunta Ejemplo ? "
+        return "La pregunta debe esta en formato: ¿ Pregunta Ejemplo ?"
     }
     }
 }

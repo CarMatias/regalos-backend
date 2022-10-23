@@ -23,15 +23,4 @@ router.post('/uploadgift',cors(corsOptions),async (req, res)=>{
       res.send("Debe enviar un name, image y tag como parametros")
     }
   })
-
-  router.get('/uploadquestion',cors(corsOptions),async (req, res)=>{
-    const question = req.body.question
-    const image = req.body.image
-    if(question != null && image != null ){
-      const newQuestion = await uploadQuestionService.uploadQuestion(question,image)
-      res.send(newQuestion)
-    }else{
-      res.send("Debe enviar una question a image como parametros")
-    }
-  })
   export default router

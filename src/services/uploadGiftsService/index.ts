@@ -65,5 +65,13 @@ class UploadGiftService{
         }
         return "Regalo cargado Correctamente!"
     }
+
+    async getGiftFav(lstGift:number[]){
+        let { data: regalo, error } = await supabase
+        .from('regalo')
+        .select("*")
+        .in('id', lstGift)
+        return regalo
+    }
 }
 export default new UploadGiftService()
