@@ -1,3 +1,4 @@
+import { definitions } from '../../../types/supabase'
 import supabase from '../dbConnection'
 import { Regalo } from './types'
 
@@ -40,8 +41,11 @@ interface Result {
 }
 class RecommendationsService {
   async removeAlreadyBoughtGifts(gifts: Result[], userId: number): Promise<Result[]> {
-    const { data: boughtGiftIds } = await supabase.from('compra').select('*').eq('beneficiario_id', userId)
-    const boughtGifts = boughtGiftIds.map((gift) => gift.regalo_id)
+    const { data: boughtGiftIds } = await supabase
+      .from<definitions['regalobeneficiario']>('regalobeneficiario')
+      .select('*')
+      .eq('id_beneficiario', userId)
+    const boughtGifts = boughtGiftIds.map((gift) => gift.id_regalo)
     return gifts.filter((gift) => !boughtGifts.includes(gift.id))
   }
 
