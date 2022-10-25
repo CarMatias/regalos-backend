@@ -14,8 +14,9 @@ router.use(bodyParser.urlencoded({extended: true }))
 router.post('/uploadquestion',cors(corsOptions),async (req, res)=>{
     const question = req.body.question
     const image = req.body.image
+    const lstEtiquetas = req.body.tags
     if(question != null && image != null ){
-      const newQuestion = await uploadQuestionService.uploadQuestion(question,image)
+      const newQuestion = await uploadQuestionService.uploadQuestion(question,image,lstEtiquetas)
       res.send(newQuestion)
     }else{
       res.send("Debe enviar una question a image como parametros")
