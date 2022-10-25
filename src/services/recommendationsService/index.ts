@@ -50,7 +50,7 @@ class RecommendationsService{
         for(let gift of await getGifts(arrGift)){
             let tagTemp = lstIdGift.filter(value=> value.id_regalo == gift.id ).map(value=> findTagsValues(lstIdTags,value))
             if(tagTemp != null || tagTemp != undefined){
-                let objTemp = {id:gift.id,name:gift.name}
+                let objTemp = {id:gift.id,name:gift.name,image:gift.image}
                 let lstTag = []
                 tagTemp.map(value => lstTag.push({id:value.id,name:value.name}))
                 let regaloDTO = {...objTemp,etiqueta:lstTag}
@@ -62,7 +62,7 @@ class RecommendationsService{
         regalo.etiqueta.map(etiqueta => matches.push(scores.filter(sc => sc.nombre == etiqueta.name)))
         let puntaje = 0
         matches.map(match => puntaje += match[0].puntaje)
-        return {nombre: regalo.name, puntaje: puntaje}
+        return {id:regalo.id,nombre: regalo.name, puntaje: puntaje, image:regalo.image}
         })
         return result
     }

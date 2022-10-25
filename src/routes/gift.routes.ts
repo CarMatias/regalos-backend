@@ -1,5 +1,6 @@
 import { Router, Request } from 'express'
 import  UploadGiftService  from '../services/uploadGiftsService'
+import uploadQuestionService from '../services/uploadQuestionService'
 
 const router = Router()
 var bodyParser = require('body-parser')
