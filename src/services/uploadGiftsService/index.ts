@@ -5,6 +5,7 @@ let relativePath = './app.js';
 let absolutePath = path.resolve(relativePath);
 
 async function uploadlabel(label:string):Promise<any>{
+    label = label.toLowerCase()
     try{
         const { data, error } = await supabase
         .from('etiqueta')
@@ -43,21 +44,13 @@ async function uploadGxL(id_gift,id_label) {
     }
 }
 
-async function findLabel(label:string):Promise<any> {
-    let { data:id, error } = await supabase
-    .from('etiqueta')
-    .select('id')
-    .eq('name', label)
-     return  id[0]
-}
-
 class UploadGiftService{
     async uploadGift(name: string, image: string,labels:string[]){
         let id_gift = await uploadGifts(name,image)
         for(let label of labels){
-            let id_label = await findLabel(label.toLowerCase())
+            let id_label = await this.findLabel(label)
             if(id_label === null || id_label === undefined){
-                id_label = await uploadlabel(label.toLowerCase())
+                id_label = await uploadlabel(label)
                 uploadGxL(id_gift,id_label)
             }else{
                 uploadGxL(id_gift,id_label.id)
@@ -72,6 +65,29 @@ class UploadGiftService{
         .select("*")
         .in('id', lstGift)
         return regalo
+    }
+
+    async uploadlabel(label:string):Promise<any>{
+        label = label.toLowerCase()
+        try{
+            const { data, error } = await supabase
+            .from('etiqueta')
+            .insert([
+            { name: label }
+        ])
+        return await data[0].id
+        }
+        catch(e){
+                //TODO
+        }
+    }
+
+    async findLabel(label:string):Promise<any> {
+        let { data:id, error } = await supabase
+        .from('etiqueta')
+        .select('id')
+        .eq('name', label)
+         return  id[0]
     }
 }
 export default new UploadGiftService()
