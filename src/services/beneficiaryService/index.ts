@@ -4,7 +4,7 @@ class BeneficiaryService{
     async newBeneficiary(name: string, secondName: string){
     const { data, error } = await supabase
     .from('beneficiario')
-    .insert([
+    .insert([   
         { 'name': name, 'apellido': secondName },
     ])
     return data != null ?   "Se agrego correctamente el benficiario!" :   error 
