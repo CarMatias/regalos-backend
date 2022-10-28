@@ -1,7 +1,7 @@
 import { Router, Request } from 'express'
 import buyGiftService from '../services/buyGiftService'
 import UploadGiftService from '../services/giftsService'
-import uploadQuestionService from '../services/questionService'
+import  GiftService  from '../services/giftsService'
 
 const router = Router()
 var bodyParser = require('body-parser')
@@ -24,7 +24,6 @@ router.post('/uploadgift', cors(corsOptions), async (req, res) => {
     res.send('Debe enviar un name, image y tag como parametros')
   }
 })
-export default router
 
 router.post('/buyGift', cors(corsOptions), async (req, res) => {
   const { giftId, userId } = req.body
@@ -36,3 +35,10 @@ router.post('/buyGift', cors(corsOptions), async (req, res) => {
     res.status(400).send('Debe enviar un giftId y userId como parametros')
   }
 })
+
+router.get('/getrandomgift', cors(corsOptions),async(req,res)=>{
+    const lstGift = await GiftService.getRandomGift()
+    res.send(lstGift)
+ })
+
+export default router
