@@ -22,4 +22,10 @@ router.post('/uploadquestion',cors(corsOptions),async (req, res)=>{
       res.send("Debe enviar una question e image como parametros")
     }
   })
+
+  router.get('/getrandom',cors(corsOptions),async(req,res)=>{
+      const lstResults = await QuestionService.getRandomQuestion()
+      res.send(lstResults)
+  })
+
   export default router
