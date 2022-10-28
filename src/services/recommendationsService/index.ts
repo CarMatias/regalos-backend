@@ -44,11 +44,13 @@ interface Result {
 }
 class RecommendationsService {
   async removeAlreadyBoughtGifts(gifts: Result[], userId: number): Promise<Result[]> {
-    const { data: boughtGiftIds } = await supabase
+    const { data } = await supabase
       .from<definitions['regalobeneficiario']>('regalobeneficiario')
       .select('*')
       .eq('id_beneficiario', userId)
       .eq('id_usuario', userId.toString())
+    const boughtGiftIds = data ?? []
+    console.log(boughtGiftIds)
     const boughtGifts = boughtGiftIds.map((gift) => gift.id_regalo)
     return gifts.filter((gift) => !boughtGifts.includes(gift.id))
   }
