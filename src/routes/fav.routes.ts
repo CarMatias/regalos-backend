@@ -1,7 +1,7 @@
 import bodyParser from "body-parser";
 import { Router } from "express";
-import uploadFavoriteService from "../services/uploadFavoriteService";
-import  UploadGiftService  from '../services/uploadGiftsService'
+import uploadFavoriteService from "../services/favoriteService";
+import  UploadGiftService  from '../services/giftsService'
 
 const router = Router()
 const cors  = require('cors')
