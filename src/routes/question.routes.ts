@@ -1,5 +1,5 @@
 import { Router, Request } from 'express'
-import uploadQuestionService from '../services/uploadQuestionService'
+import QuestionService from '../services/questionService'
 
 const router = Router()
 var bodyParser = require('body-parser')
@@ -16,10 +16,10 @@ router.post('/uploadquestion',cors(corsOptions),async (req, res)=>{
     const image = req.body.image
     const lstEtiquetas = req.body.tags
     if(question != null && image != null ){
-      const newQuestion = await uploadQuestionService.uploadQuestion(question,image,lstEtiquetas)
+      const newQuestion = await QuestionService.uploadQuestion(question,image,lstEtiquetas)
       res.send(newQuestion)
     }else{
-      res.send("Debe enviar una question a image como parametros")
+      res.send("Debe enviar una question e image como parametros")
     }
   })
   export default router

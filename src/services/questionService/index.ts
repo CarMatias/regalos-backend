@@ -1,5 +1,5 @@
 import supabase from "../dbConnection"
-import gift from '../uploadGiftsService/index'
+import gift from '../giftsService/index'
 
 const createQxT = async(question:number, tag:number)=>{
    const { data, error } = await supabase
