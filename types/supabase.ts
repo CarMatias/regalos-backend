@@ -481,6 +481,7 @@ export interface paths {
           id?: parameters["rowFilter.regalobeneficiario.id"];
           id_regalo?: parameters["rowFilter.regalobeneficiario.id_regalo"];
           id_beneficiario?: parameters["rowFilter.regalobeneficiario.id_beneficiario"];
+          id_usuario?: parameters["rowFilter.regalobeneficiario.id_usuario"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -534,6 +535,7 @@ export interface paths {
           id?: parameters["rowFilter.regalobeneficiario.id"];
           id_regalo?: parameters["rowFilter.regalobeneficiario.id_regalo"];
           id_beneficiario?: parameters["rowFilter.regalobeneficiario.id_beneficiario"];
+          id_usuario?: parameters["rowFilter.regalobeneficiario.id_usuario"];
         };
         header: {
           /** Preference */
@@ -551,6 +553,7 @@ export interface paths {
           id?: parameters["rowFilter.regalobeneficiario.id"];
           id_regalo?: parameters["rowFilter.regalobeneficiario.id_regalo"];
           id_beneficiario?: parameters["rowFilter.regalobeneficiario.id_beneficiario"];
+          id_usuario?: parameters["rowFilter.regalobeneficiario.id_usuario"];
         };
         body: {
           /** regalobeneficiario */
@@ -1125,6 +1128,8 @@ export interface definitions {
      * This is a Foreign Key to `beneficiario.id`.<fk table='beneficiario' column='id'/>
      */
     id_beneficiario?: number;
+    /** Format: uuid */
+    id_usuario: string;
   };
   beneficiario: {
     /**
@@ -1273,6 +1278,8 @@ export interface parameters {
   "rowFilter.regalobeneficiario.id_regalo": string;
   /** Format: bigint */
   "rowFilter.regalobeneficiario.id_beneficiario": string;
+  /** Format: uuid */
+  "rowFilter.regalobeneficiario.id_usuario": string;
   /** @description beneficiario */
   "body.beneficiario": definitions["beneficiario"];
   /** Format: bigint */

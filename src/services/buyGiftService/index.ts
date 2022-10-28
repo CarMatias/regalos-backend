@@ -7,6 +7,7 @@ class BuyGiftService {
       {
         id_regalo: giftId,
         id_beneficiario: userId,
+        id_usuario: userId.toString(),
       },
     ])
   }

@@ -24,7 +24,10 @@ const getIdGift = async (idTag: number[]): Promise<any> => {
 }
 
 const getGifts = async (idGifts: string[]) => {
-  let { data: regalo, error } = await supabase.from('regalo').select('*').in('id', idGifts)
+  let { data: regalo, error } = await supabase
+    .from<definitions['regalo']>('regalo')
+    .select('*')
+    .in('id', idGifts)
   return regalo
 }
 
@@ -45,6 +48,7 @@ class RecommendationsService {
       .from<definitions['regalobeneficiario']>('regalobeneficiario')
       .select('*')
       .eq('id_beneficiario', userId)
+      .eq('id_usuario', userId.toString())
     const boughtGifts = boughtGiftIds.map((gift) => gift.id_regalo)
     return gifts.filter((gift) => !boughtGifts.includes(gift.id))
   }
