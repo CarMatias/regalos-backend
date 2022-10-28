@@ -1,9 +1,10 @@
+import { definitions } from "../../../types/supabase"
 import supabase from "../dbConnection"
 import gift from '../giftsService/index'
 
 const createQxT = async(question:number, tag:number)=>{
    const { data, error } = await supabase
-  .from('preguntaetiqueta')
+  .from<definitions["preguntaetiqueta"]>('preguntaetiqueta')
   .insert([
     { id_etiqueta: tag, id_pregunta:question},
   ])
@@ -12,7 +13,7 @@ const createQxT = async(question:number, tag:number)=>{
 const tagValue = async (idQuestion:number,tag:string) =>{
     let label = await gift.findLabel(tag)
     if(label == null){
-        let label = await gift.uploadlabel(tag)
+        label = await gift.uploadlabel(tag)
     }
     createQxT(idQuestion,await label)
 }

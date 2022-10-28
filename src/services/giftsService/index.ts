@@ -53,7 +53,7 @@ class UploadGiftService{
                 id_label = await uploadlabel(label)
                 uploadGxL(id_gift,id_label)
             }else{
-                uploadGxL(id_gift,id_label.id)
+                uploadGxL(id_gift,id_label)
             }
         }
         return "Regalo cargado Correctamente!"
@@ -67,7 +67,7 @@ class UploadGiftService{
         return regalo
     }
 
-    async uploadlabel(label:string):Promise<any>{
+    async uploadlabel(label:string):Promise<number>{
         label = label.toLowerCase()
         try{
             const { data, error } = await supabase
@@ -82,12 +82,12 @@ class UploadGiftService{
         }
     }
 
-    async findLabel(label:string):Promise<any> {
+    async findLabel(label:string):Promise<number> {
         let { data:id, error } = await supabase
         .from('etiqueta')
         .select('id')
         .eq('name', label)
-         return  id[0]
+         return id[0].id as number
     }
 }
 export default new UploadGiftService()
