@@ -23,7 +23,7 @@ router.post('/uploadquestion',cors(corsOptions),async (req, res)=>{
     }
   })
 
-  router.get('/getrandom',cors(corsOptions),async(req,res)=>{
+  router.get('/getrandomquestion',cors(corsOptions),async(req,res)=>{
       const lstResults = await QuestionService.getRandomQuestion()
       res.send(lstResults)
   })
