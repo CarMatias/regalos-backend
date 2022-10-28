@@ -82,12 +82,12 @@ class UploadGiftService{
         }
     }
 
-    async findLabel(label:string):Promise<number> {
+    async findLabel(label:string):Promise<number | null> {
         let { data:id, error } = await supabase
         .from('etiqueta')
         .select('id')
         .eq('name', label)
-         return id[0].id as number
+         return id != null && id.length != 0 ?  id[0].id as number : null
     }
 }
 export default new UploadGiftService()
