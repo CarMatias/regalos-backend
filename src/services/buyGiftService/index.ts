@@ -2,14 +2,16 @@ import { definitions } from '../../../types/supabase'
 import supabase from '../dbConnection'
 
 class BuyGiftService {
-  async buyGift(giftId: number, userId: number) {
-    await supabase.from<definitions['regalobeneficiario']>('regalobeneficiario').insert([
+  async buyGift(giftId: number, userId: string) {
+    console.log('buying gift', giftId, userId)
+    const res = await supabase.from<definitions['regalobeneficiario']>('regalobeneficiario').insert([
       {
         id_regalo: giftId,
-        id_beneficiario: userId,
-        id_usuario: userId.toString(),
+        id_beneficiario: 1,
+        id_usuario: userId,
       },
     ])
+    console.log(res.error)
   }
 }
 

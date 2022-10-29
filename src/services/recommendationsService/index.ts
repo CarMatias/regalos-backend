@@ -1,4 +1,5 @@
 import { definitions } from '../../../types/supabase'
+import buyGiftService from '../buyGiftService'
 import supabase from '../dbConnection'
 import { Regalo } from './types'
 
@@ -47,12 +48,55 @@ class RecommendationsService {
     const { data } = await supabase
       .from<definitions['regalobeneficiario']>('regalobeneficiario')
       .select('*')
-      .eq('id_beneficiario', userId)
-      .eq('id_usuario', userId.toString())
+      .eq('id_beneficiario', 1)
+      .eq('id_usuario', userId)
     const boughtGiftIds = data ?? []
     console.log(boughtGiftIds)
     const boughtGifts = boughtGiftIds.map((gift) => gift.id_regalo)
     return gifts.filter((gift) => !boughtGifts.includes(gift.id))
+  }
+
+  async getMysteriousGift(
+    userId: number,
+    tags: string[]
+  ): Promise<{
+    id: number
+    name: string
+    imgSource: string
+  }> {
+    const regalos = await supabase
+      .from<definitions['regalo'] & { 'etiquetas.etiqueta.name': string; beneficiarios: unknown[] }>('regalo')
+      .select(
+        `
+          id,
+          name,
+          image,
+          beneficiarios:regalobeneficiario(
+            id_beneficiario,
+            id_usuario
+          ),
+          etiquetas:regaloetiqueta!inner(
+            etiqueta!inner(name)
+          )
+    `
+      )
+      .in('etiquetas.etiqueta.name', tags)
+
+    const mappedData = regalos.data.filter((r) => r.beneficiarios.length == 0)
+    const index = Math.floor(Math.random() * mappedData.length)
+    buyGiftService.buyGift(regalos.data[index].id, userId.toString())
+    return mappedData.map(
+      (e) =>
+        ({
+          id: e.id,
+          name: e.name,
+          imgSource: e.image,
+        } as {
+          id: number
+          name: string
+          imgSource: string
+        })
+    )[index]
   }
 
   async findGifts(scores: any[]): Promise<Result[]> {
