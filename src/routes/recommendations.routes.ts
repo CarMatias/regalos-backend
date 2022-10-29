@@ -1,4 +1,5 @@
 import { Router, Request } from 'express'
+import recommendationsService from '../services/recommendationsService'
 import RecommendationsService from '../services/recommendationsService'
 
 const router = Router()
@@ -16,18 +17,30 @@ type FindRecommendationsBodyParams = {
     nombre: string
     puntaje: number
   }[]
+  userId: number
 }
 
 router.post<{}, {}, FindRecommendationsBodyParams>('/findrecom', cors(corsOptions), async (req, res) => {
-  const { score } = req.body
+  const { score, userId } = req.body
   if (!score) {
     res.status(400).send('Debe enviar un score como parametro')
     return
   }
   const recommendations = await RecommendationsService.removeAlreadyBoughtGifts(
     await RecommendationsService.findGifts(score),
-    1
+    userId
   )
   res.send(recommendations)
 })
 export default router
+
+router.post<{}, {}, { userId; tags: string[] }>('/mysteriousBox', cors(corsOptions), async (req, res) => {
+  const { tags, userId } = req.body
+  if (!tags) {
+    res.status(400).send('Debe enviar tags como parametro')
+    return
+  }
+  const gift = await recommendationsService.getMysteriousGift(userId, tags)
+
+  res.send(gift)
+})
