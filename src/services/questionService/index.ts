@@ -31,11 +31,13 @@ const getAllTags = async(idQuestion:any[])=>{
         .from<definitions['pregunta'] & { etiquetas: { etiqueta: { name: string } }[] }>('pregunta')
         .select(
         `
+            id,
             nombre,
             etiquetas:preguntaetiqueta(etiqueta(name))
         `
         ).in("id",ids)
       const question = preguntaetiqueta.map((p) => ({
+        id:p.id,
         name: p.nombre,
         etiquetas: p.etiquetas.map((e) => e.etiqueta.name),
       }))

@@ -44,6 +44,13 @@ async function uploadGxL(id_gift,id_label) {
     }
 }
 
+function shuffleArray(array: any[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[array[i], array[j]] = [array[j], array[i]]
+    }
+  }
+
 class UploadGiftService{
     async uploadGift(name: string, image: string,labels:string[]){
         let id_gift = await uploadGifts(name,image)
@@ -88,6 +95,18 @@ class UploadGiftService{
         .select('id')
         .eq('name', label)
          return id != null && id.length != 0 ?  id[0].id as number : null
+    }
+
+    async getRandomGift(){
+        let { data: regalos, error } = await supabase
+        .from('regalo')
+        .select('*')
+        shuffleArray(regalos)
+        const lstRandom = []
+        for(let i = 0; i<7; i++){
+            lstRandom.push(regalos[i])
+        }
+        return lstRandom
     }
 }
 export default new UploadGiftService()
