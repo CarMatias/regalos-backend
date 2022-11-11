@@ -1,6 +1,6 @@
 import bodyParser from "body-parser";
 import { Router } from 'express'
-import  UploadVendorService  from '../services/vendorService'
+import  VendorService  from '../services/vendorService'
 
 
 const router = Router()
@@ -11,13 +11,21 @@ const corsOptions={
 }
 router.use(bodyParser.json())
 
-router.post('/vendorservice',cors(corsOptions),async(req,res)=>{
+router.post('/uploadvendor',cors(corsOptions),async(req,res)=>{
     const id_regalo = req.body.id_regalo
     const id_usuario = req.body.id_usuario
-    const newVendor = UploadVendorService.newVendor(id_regalo, id_usuario)
+    const newVendor = VendorService.newVendor(id_regalo, id_usuario)
     if(newVendor != null){
         res.send("Enviado correctamente")
     }
+})
+
+router.get('/getvendor',cors(corsOptions),async(req,res)=>{
+    const id_usuario = req.body.id_usuario
+    const result = await VendorService.getGiftIdByIdUser(41)
+    console.log(id_usuario)
+    console.log(result)
+    res.send(result)
 })
 
 export default router
