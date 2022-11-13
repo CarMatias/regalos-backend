@@ -1,5 +1,12 @@
 import supabase from "../dbConnection"
 
+
+const countFeedback = (feedback:any) =>{
+  const goodfeedback = feedback.filter(value => value.calificacion == 's')
+  const badfeedback = feedback.filter(value => value.calificacion == 'n')
+  return {positive:goodfeedback.length,negative:badfeedback.length}
+}
+
 class VendorService{
     async newVendor(id_reg:number, id_usu:number){
       const { data, error } = await supabase
@@ -26,17 +33,9 @@ class VendorService{
           id,name,feedback(calificacion))
           `
           ).not( "id_vendedor", "is", "null" )
-         let getWithFeedback = await result.map( value => ({id: value.id, name: value.name, feedback: this.countFeedback(value.feedback) }))
+         let getWithFeedback = await result.map( value => ({id: value.id, name: value.name, feedback: countFeedback(value.feedback) }))
          return getWithFeedback
     }
-  
-
-    async countFeedback(feedback:any){
-      const goodfeedback = feedback.reduce((value, acu) => value.calificacion == 's' && acu++, 0)
-      console.log(goodfeedback)
-      return {positive:goodfeedback}
-    }
-
-    }
+   }
 
 export default new VendorService
