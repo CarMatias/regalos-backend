@@ -18,17 +18,25 @@ class VendorService{
       return regalos
     }
 
-    async getGiftIdByIdUser(id_usuario:number){
-      const { data: regalos, error } = await supabase
+    async getFeedbackIdByIdUser(id_usuario:number){
+      const { data: result, error } = await supabase
         .from("regalo")
         .select(
           `
           id,name,feedback(calificacion))
           `
-          ).not( "id_vendedor", "is", "null" );
-        return regalos
-      }
+          ).not( "id_vendedor", "is", "null" )
+         let getWithFeedback = await result.map( value => ({id: value.id, name: value.name, feedback: this.countFeedback(value.feedback) }))
+         return getWithFeedback
     }
-    
+  
+
+    async countFeedback(feedback:any){
+      const goodfeedback = feedback.reduce((value, acu) => value.calificacion == 's' && acu++, 0)
+      console.log(goodfeedback)
+      return {positive:goodfeedback}
+    }
+
+    }
 
 export default new VendorService

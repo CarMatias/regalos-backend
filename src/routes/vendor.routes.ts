@@ -22,8 +22,7 @@ router.post('/uploadvendor',cors(corsOptions),async(req,res)=>{
 
 router.get('/getvendor',cors(corsOptions),async(req,res)=>{
     const id_usuario = req.body.id_usuario
-    const result = await VendorService.getGiftIdByIdUser(41)
-    console.log(id_usuario)
+    const result = await VendorService.getFeedbackIdByIdUser(1)
     console.log(result)
     res.send(result)
 })
