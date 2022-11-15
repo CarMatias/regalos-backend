@@ -36,9 +36,16 @@ router.post('/buyGift', cors(corsOptions), async (req, res) => {
   }
 })
 
+<<<<<<< Updated upstream
 router.get('/getrandomgift', cors(corsOptions),async(req,res)=>{
     const lstGift = await GiftService.getRandomGift()
     res.send(lstGift)
  })
 
 export default router
+=======
+router.get('/getBoughtGiftsTags', cors(corsOptions), async (req, res) => {
+  const tags = await UploadGiftService.getBoughtGiftsTags()
+  res.send(tags)
+})
+>>>>>>> Stashed changes
