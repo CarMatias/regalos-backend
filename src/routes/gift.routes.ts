@@ -1,7 +1,7 @@
 import { Router, Request } from 'express'
 import buyGiftService from '../services/buyGiftService'
 import UploadGiftService from '../services/giftsService'
-import  GiftService  from '../services/giftsService'
+import GiftService from '../services/giftsService'
 
 const router = Router()
 var bodyParser = require('body-parser')
@@ -36,16 +36,13 @@ router.post('/buyGift', cors(corsOptions), async (req, res) => {
   }
 })
 
-<<<<<<< Updated upstream
-router.get('/getrandomgift', cors(corsOptions),async(req,res)=>{
-    const lstGift = await GiftService.getRandomGift()
-    res.send(lstGift)
- })
+router.get('/getrandomgift', cors(corsOptions), async (req, res) => {
+  const lstGift = await GiftService.getRandomGift()
+  res.send(lstGift)
+})
 
 export default router
-=======
 router.get('/getBoughtGiftsTags', cors(corsOptions), async (req, res) => {
   const tags = await UploadGiftService.getBoughtGiftsTags()
   res.send(tags)
 })
->>>>>>> Stashed changes
