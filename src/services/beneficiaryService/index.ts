@@ -14,5 +14,12 @@ class BeneficiaryService {
       .eq("id", id_beneficiary);
     return beneficiario;
   }
+  async getBeneficiarys() {
+    const { data: beneficiario, error } = await supabase
+      .from("beneficiario")
+      .select("name,apellido");
+
+    return beneficiario;
+  }
 }
 export default new BeneficiaryService();
