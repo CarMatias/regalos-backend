@@ -5,6 +5,7 @@ import questionRoutes from './routes/question.routes'
 import favRoutes from './routes/fav.routes'
 import beneficiaryRoutes from './routes/beneficiary.routes'
 import feedbackRoutes from './routes/feedback.routes'
+import vendorRoutes from './routes/vendor.routes'
 const app = express()
 
 
@@ -14,5 +15,6 @@ app.use(giftRoutes)
 app.use(recommendationRoutes)
 app.use(questionRoutes)
 app.use(feedbackRoutes)
+app.use(vendorRoutes)
 
 export default app
