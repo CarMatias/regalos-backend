@@ -17,8 +17,9 @@ router.post('/uploadgift', cors(corsOptions), async (req, res) => {
   const name = req.body.name
   const image = req.body.image
   const tag = req.body.tag
+  const price = req.body.price
   if (name != null && image != null && tag != null) {
-    const newGift = await UploadGiftService.uploadGift(name, image, tag)
+    const newGift = await UploadGiftService.uploadGift(name, image, tag,price)
     res.send(newGift)
   } else {
     res.send('Debe enviar un name, image y tag como parametros')

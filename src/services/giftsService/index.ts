@@ -14,9 +14,9 @@ async function uploadlabel(label: string): Promise<any> {
   }
 }
 
-async function uploadGifts(name: string, image: string): Promise<any> {
+async function uploadGifts(name: string, image: string, price:number,id_user:string): Promise<any> {
   try {
-    const { data, error } = await supabase.from('regalo').insert([{ name: name, image: image }])
+    const { data, error } = await supabase.from('regalo').insert([{ name: name, image: image, price:price,id_user:id_user}])
     if (error) throw error
     return await data[0].id
   } catch (e) {
@@ -41,8 +41,8 @@ function shuffleArray(array: any[]) {
 }
 
 class UploadGiftService {
-  async uploadGift(name: string, image: string, labels: string[]) {
-    let id_gift = await uploadGifts(name, image)
+  async uploadGift(name: string, image: string, labels: string[],price:number,id_user:string) {
+    let id_gift = await uploadGifts(name, image,price,id_user)
     for (let label of labels) {
       let id_label = await this.findLabel(label)
       if (id_label === null || id_label === undefined) {

@@ -15,18 +15,19 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.post("/newbeneficiary", cors(corsOptions), async (req, res) => {
   const name = req.body.name;
   const apellido = req.body.apellido;
-  console.log(name, apellido);
-  const newB = await beneficiaryService.newBeneficiary(name, apellido);
+  const id_user = req.body.id_user
+  console.log(name, apellido, id_user);
+  const newB = await beneficiaryService.newBeneficiary(name, apellido,id_user);
   if (newB != null) {
     res.send("Se agrego correctamente!");
   }
 });
 
-router.get("/getbeneficiary", cors(corsOptions), async (req, res) => {
-  const id_user = req.body.id_beneficiary;
-  const result = await beneficiaryService.getBeneficiarys();
+router.post("/getbeneficiary", cors(corsOptions), async (req, res) => {
+  const id_user = req.body.id_user;
+  console.log(id_user)
+  const result = await beneficiaryService.getBeneficiarys(id_user);
   res.send(result);
-  console.log(result);
 });
 
 export default router;
