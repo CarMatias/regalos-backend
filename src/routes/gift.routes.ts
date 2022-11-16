@@ -1,7 +1,7 @@
 import { Router, Request } from 'express'
 import buyGiftService from '../services/buyGiftService'
 import UploadGiftService from '../services/giftsService'
-import  GiftService  from '../services/giftsService'
+import GiftService from '../services/giftsService'
 
 const router = Router()
 var bodyParser = require('body-parser')
@@ -26,19 +26,19 @@ router.post('/uploadgift', cors(corsOptions), async (req, res) => {
 })
 
 router.post('/buyGift', cors(corsOptions), async (req, res) => {
-  const { giftId, userId } = req.body
+  const { giftId, userId, beneficiaryId } = req.body
 
   if (giftId != null && userId != null) {
-    await buyGiftService.buyGift(giftId, userId)
+    await buyGiftService.buyGift(giftId, userId, beneficiaryId)
     res.status(200).send('Gift bought')
   } else {
     res.status(400).send('Debe enviar un giftId y userId como parametros')
   }
 })
 
-router.get('/getrandomgift', cors(corsOptions),async(req,res)=>{
-    const lstGift = await GiftService.getRandomGift()
-    res.send(lstGift)
- })
+router.get('/getrandomgift', cors(corsOptions), async (req, res) => {
+  const lstGift = await GiftService.getRandomGift()
+  res.send(lstGift)
+})
 
 export default router
