@@ -2,6 +2,7 @@ export interface Regalo{
     id:number,
     name:string,
     image:string,
+    price:number | null
     etiqueta:Etiqueta[]
 }
 

@@ -42,6 +42,7 @@ interface Result {
   nombre: string
   puntaje: number
   image: string
+  price:number | null
 }
 class RecommendationsService {
   async removeAlreadyBoughtGifts(gifts: Result[], userId: number, beneficiaryId: number): Promise<Result[]> {
@@ -72,6 +73,7 @@ class RecommendationsService {
           id,
           name,
           image,
+          price,
           beneficiarios:regalobeneficiario(
             id_beneficiario,
             id_usuario
@@ -107,13 +109,13 @@ class RecommendationsService {
     let lstIdTags = await getIdByTag(arrTag)
     let arr = lstIdTags.map((value) => value.id)
     let lstIdGift = await getIdGift(arr)
-    let arrGift = lstIdGift.map((value) => value.id_regalo)
+    let arrGift = lstIdGift.map((value) => value.id_regalo).filter(value => value != null)
     for (let gift of await getGifts(arrGift)) {
       let tagTemp = lstIdGift
         .filter((value) => value.id_regalo == gift.id)
         .map((value) => findTagsValues(lstIdTags, value))
       if (tagTemp != null || tagTemp != undefined) {
-        let objTemp = { id: gift.id, name: gift.name, image: gift.image }
+        let objTemp = { id: gift.id, name: gift.name, image: gift.image,price:gift.price }
         let lstTag = []
         tagTemp.map((value) => lstTag.push({ id: value.id, name: value.name }))
         let regaloDTO = { ...objTemp, etiqueta: lstTag }
@@ -125,7 +127,7 @@ class RecommendationsService {
       regalo.etiqueta.map((etiqueta) => matches.push(scores.filter((sc) => sc.nombre == etiqueta.name)))
       let puntaje = 0
       matches.map((match) => (puntaje += match[0].puntaje))
-      return { id: regalo.id, nombre: regalo.name, puntaje: puntaje, image: regalo.image }
+      return { id: regalo.id, nombre: regalo.name, puntaje: puntaje, image: regalo.image, price:regalo.price }
     })
     return result
   }

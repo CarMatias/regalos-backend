@@ -1076,6 +1076,7 @@ export interface definitions {
     id_etiqueta?: number;
   };
   regalo: {
+    price: any;
     /**
      * Format: bigint
      * @description Note:
