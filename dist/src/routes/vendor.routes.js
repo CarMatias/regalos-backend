@@ -14,30 +14,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = require("express");
-const beneficiaryService_1 = __importDefault(require("../services/beneficiaryService"));
+const vendorService_1 = __importDefault(require("../services/vendorService"));
 const router = (0, express_1.Router)();
-const cors = require("cors");
+const cors = require('cors');
 const corsOptions = {
     origin: "*",
-    optionsSuccessStatus: 200,
+    optionsSuccesStatus: 200
 };
 router.use(body_parser_1.default.json());
-router.use(body_parser_1.default.urlencoded({ extended: true }));
-router.post("/newbeneficiary", cors(corsOptions), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const name = req.body.name;
-    const apellido = req.body.apellido;
-    const id_user = req.body.id_user;
-    console.log(name, apellido, id_user);
-    const newB = yield beneficiaryService_1.default.newBeneficiary(name, apellido, id_user);
-    if (newB != null) {
-        res.send("Se agrego correctamente!");
+router.post('/uploadvendor', cors(corsOptions), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_regalo = req.body.id_regalo;
+    const id_usuario = req.body.id_usuario;
+    const newVendor = vendorService_1.default.newVendor(id_regalo, id_usuario);
+    if (newVendor != null) {
+        res.send("Enviado correctamente");
     }
 }));
-router.post("/getbeneficiary", cors(corsOptions), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id_user = req.body.id_user;
-    console.log(id_user);
-    const result = yield beneficiaryService_1.default.getBeneficiarys(id_user);
+router.get('/getvendor', cors(corsOptions), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id_usuario = req.body.id_usuario;
+    const result = yield vendorService_1.default.getFeedbackIdByIdUser(id_usuario);
+    console.log(result);
     res.send(result);
 }));
 exports.default = router;
-//# sourceMappingURL=beneficiary.routes.js.map
+//# sourceMappingURL=vendor.routes.js.map

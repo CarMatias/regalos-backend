@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const buyGiftService_1 = __importDefault(require("../buyGiftService"));
 const dbConnection_1 = __importDefault(require("../dbConnection"));
 const getIdByTag = (tags) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -46,17 +47,44 @@ const findTagsValues = (tags, value) => {
     return tag;
 };
 class RecommendationsService {
-    removeAlreadyBoughtGifts(gifts, userId) {
+    removeAlreadyBoughtGifts(gifts, userId, beneficiaryId) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data } = yield dbConnection_1.default
                 .from('regalobeneficiario')
                 .select('*')
-                .eq('id_beneficiario', userId)
-                .eq('id_usuario', userId.toString());
+                .eq('id_beneficiario', beneficiaryId)
+                .eq('id_usuario', userId);
             const boughtGiftIds = data !== null && data !== void 0 ? data : [];
             console.log(boughtGiftIds);
             const boughtGifts = boughtGiftIds.map((gift) => gift.id_regalo);
             return gifts.filter((gift) => !boughtGifts.includes(gift.id));
+        });
+    }
+    getMysteriousGift(userId, tags, beneficiaryId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const regalos = yield dbConnection_1.default
+                .from('regalo')
+                .select(`
+          id,
+          name,
+          image,
+          beneficiarios:regalobeneficiario(
+            id_beneficiario,
+            id_usuario
+          ),
+          etiquetas:regaloetiqueta!inner(
+            etiqueta!inner(name)
+          )
+    `)
+                .in('etiquetas.etiqueta.name', tags);
+            const mappedData = regalos.data.filter((r) => r.beneficiarios.length == 0);
+            const index = Math.floor(Math.random() * mappedData.length);
+            buyGiftService_1.default.buyGift(regalos.data[index].id, userId.toString(), beneficiaryId);
+            return mappedData.map((e) => ({
+                id: e.id,
+                name: e.name,
+                imgSource: e.image,
+            }))[index];
         });
     }
     findGifts(scores) {

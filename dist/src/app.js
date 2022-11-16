@@ -10,6 +10,7 @@ const question_routes_1 = __importDefault(require("./routes/question.routes"));
 const fav_routes_1 = __importDefault(require("./routes/fav.routes"));
 const beneficiary_routes_1 = __importDefault(require("./routes/beneficiary.routes"));
 const feedback_routes_1 = __importDefault(require("./routes/feedback.routes"));
+const vendor_routes_1 = __importDefault(require("./routes/vendor.routes"));
 const app = (0, express_1.default)();
 app.use(beneficiary_routes_1.default);
 app.use(fav_routes_1.default);
@@ -17,5 +18,6 @@ app.use(gift_routes_1.default);
 app.use(recommendations_routes_1.default);
 app.use(question_routes_1.default);
 app.use(feedback_routes_1.default);
+app.use(vendor_routes_1.default);
 exports.default = app;
 //# sourceMappingURL=app.js.map

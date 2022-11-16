@@ -26,11 +26,10 @@ var corsOptions = {
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.post('/uploadgift', cors(corsOptions), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const name = req.body.name;
-    const image = req.body.image;
-    const tag = req.body.tag;
+    const { name, image, tag, price, id_user } = req.body;
+    console.log(id_user);
     if (name != null && image != null && tag != null) {
-        const newGift = yield giftsService_1.default.uploadGift(name, image, tag);
+        const newGift = yield giftsService_1.default.uploadGift(name, image, tag, price, id_user);
         res.send(newGift);
     }
     else {
@@ -38,9 +37,9 @@ router.post('/uploadgift', cors(corsOptions), (req, res) => __awaiter(void 0, vo
     }
 }));
 router.post('/buyGift', cors(corsOptions), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { giftId, userId } = req.body;
+    const { giftId, userId, beneficiaryId } = req.body;
     if (giftId != null && userId != null) {
-        yield buyGiftService_1.default.buyGift(giftId, userId);
+        yield buyGiftService_1.default.buyGift(giftId, userId, beneficiaryId);
         res.status(200).send('Gift bought');
     }
     else {
@@ -52,4 +51,8 @@ router.get('/getrandomgift', cors(corsOptions), (req, res) => __awaiter(void 0, 
     res.send(lstGift);
 }));
 exports.default = router;
+router.get('/getBoughtGiftsTags', cors(corsOptions), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const tags = yield giftsService_1.default.getBoughtGiftsTags();
+    res.send(tags);
+}));
 //# sourceMappingURL=gift.routes.js.map

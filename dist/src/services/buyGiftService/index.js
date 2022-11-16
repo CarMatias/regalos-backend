@@ -14,15 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbConnection_1 = __importDefault(require("../dbConnection"));
 class BuyGiftService {
-    buyGift(giftId, userId) {
+    buyGift(giftId, userId, beneficiaryId) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield dbConnection_1.default.from('regalobeneficiario').insert([
+            console.log('buying gift', giftId, userId);
+            const res = yield dbConnection_1.default.from('regalobeneficiario').insert([
                 {
                     id_regalo: giftId,
-                    id_beneficiario: userId,
-                    id_usuario: userId.toString(),
+                    id_beneficiario: beneficiaryId,
+                    id_usuario: userId,
                 },
             ]);
+            console.log(res.error);
         });
     }
 }

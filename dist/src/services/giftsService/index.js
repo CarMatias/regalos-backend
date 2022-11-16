@@ -20,11 +20,7 @@ function uploadlabel(label) {
     return __awaiter(this, void 0, void 0, function* () {
         label = label.toLowerCase();
         try {
-            const { data, error } = yield dbConnection_1.default
-                .from('etiqueta')
-                .insert([
-                { name: label }
-            ]);
+            const { data, error } = yield dbConnection_1.default.from('etiqueta').insert([{ name: label }]);
             return yield data[0].id;
         }
         catch (e) {
@@ -32,14 +28,12 @@ function uploadlabel(label) {
         }
     });
 }
-function uploadGifts(name, image) {
+function uploadGifts(name, image, price, id_user) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const { data, error } = yield dbConnection_1.default
                 .from('regalo')
-                .insert([
-                { name: name, image: image },
-            ]);
+                .insert([{ name: name, image: image, price: price, id_vendedor: id_user }]);
             if (error)
                 throw error;
             return yield data[0].id;
@@ -54,9 +48,7 @@ function uploadGxL(id_gift, id_label) {
         try {
             const { data, error } = yield dbConnection_1.default
                 .from('regaloetiqueta')
-                .insert([
-                { id_regalo: id_gift, id_etiqueta: id_label },
-            ]);
+                .insert([{ id_regalo: id_gift, id_etiqueta: id_label }]);
         }
         catch (e) {
             //TODO
@@ -70,9 +62,10 @@ function shuffleArray(array) {
     }
 }
 class UploadGiftService {
-    uploadGift(name, image, labels) {
+    uploadGift(name, image, labels, price, id_user) {
         return __awaiter(this, void 0, void 0, function* () {
-            let id_gift = yield uploadGifts(name, image);
+            console.log();
+            let id_gift = yield uploadGifts(name, image, price, id_user);
             for (let label of labels) {
                 let id_label = yield this.findLabel(label);
                 if (id_label === null || id_label === undefined) {
@@ -83,15 +76,12 @@ class UploadGiftService {
                     uploadGxL(id_gift, id_label);
                 }
             }
-            return "Regalo cargado Correctamente!";
+            return 'Regalo cargado Correctamente!';
         });
     }
     getGiftFav(lstGift) {
         return __awaiter(this, void 0, void 0, function* () {
-            let { data: regalo, error } = yield dbConnection_1.default
-                .from('regalo')
-                .select("*")
-                .in('id', lstGift);
+            let { data: regalo, error } = yield dbConnection_1.default.from('regalo').select('*').in('id', lstGift);
             return regalo;
         });
     }
@@ -99,11 +89,7 @@ class UploadGiftService {
         return __awaiter(this, void 0, void 0, function* () {
             label = label.toLowerCase();
             try {
-                const { data, error } = yield dbConnection_1.default
-                    .from('etiqueta')
-                    .insert([
-                    { name: label }
-                ]);
+                const { data, error } = yield dbConnection_1.default.from('etiqueta').insert([{ name: label }]);
                 return yield data[0].id;
             }
             catch (e) {
@@ -113,24 +99,25 @@ class UploadGiftService {
     }
     findLabel(label) {
         return __awaiter(this, void 0, void 0, function* () {
-            let { data: id, error } = yield dbConnection_1.default
-                .from('etiqueta')
-                .select('id')
-                .eq('name', label);
+            let { data: id, error } = yield dbConnection_1.default.from('etiqueta').select('id').eq('name', label);
             return id != null && id.length != 0 ? id[0].id : null;
         });
     }
     getRandomGift() {
         return __awaiter(this, void 0, void 0, function* () {
-            let { data: regalos, error } = yield dbConnection_1.default
-                .from('regalo')
-                .select('*');
+            let { data: regalos, error } = yield dbConnection_1.default.from('regalo').select('*');
             shuffleArray(regalos);
             const lstRandom = [];
             for (let i = 0; i < 7; i++) {
                 lstRandom.push(regalos[i]);
             }
             return lstRandom;
+        });
+    }
+    getBoughtGiftsTags() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const res = yield dbConnection_1.default.from('bought_gifts_tags').select('*').order('count', { ascending: false });
+            return res.data;
         });
     }
 }

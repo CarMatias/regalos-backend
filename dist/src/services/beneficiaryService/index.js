@@ -14,14 +14,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dbConnection_1 = __importDefault(require("../dbConnection"));
 class BeneficiaryService {
-    newBeneficiary(name, secondName) {
+    newBeneficiary(name, apellido, id_user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, error } = yield dbConnection_1.default
+            const { data, error } = yield dbConnection_1.default.from('beneficiario').insert([{ name: name, apellido: apellido, id_user: id_user }]);
+            return data != null ? 'Se agrego correctamente el benficiario!' : error;
+        });
+    }
+    getBeneficiaryById(id_beneficiary) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { data: beneficiario, error } = yield dbConnection_1.default
                 .from('beneficiario')
-                .insert([
-                { 'name': name, 'apellido': secondName },
-            ]);
-            return data != null ? "Se agrego correctamente el benficiario!" : error;
+                .select('name,apellido')
+                .eq('id', id_beneficiary);
+            return beneficiario;
+        });
+    }
+    getBeneficiarys(id_user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(id_user);
+            const { data: beneficiario, error } = yield dbConnection_1.default.from('beneficiario').select('name,apellido,id').eq('id_user', id_user);
+            console.log(beneficiario);
+            return beneficiario;
         });
     }
 }
