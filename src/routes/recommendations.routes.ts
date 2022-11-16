@@ -18,29 +18,35 @@ type FindRecommendationsBodyParams = {
     puntaje: number
   }[]
   userId: number
+  beneficiaryId: number
 }
 
 router.post<{}, {}, FindRecommendationsBodyParams>('/findrecom', cors(corsOptions), async (req, res) => {
-  const { score, userId } = req.body
+  const { score, userId, beneficiaryId } = req.body
   if (!score) {
     res.status(400).send('Debe enviar un score como parametro')
     return
   }
   const recommendations = await RecommendationsService.removeAlreadyBoughtGifts(
     await RecommendationsService.findGifts(score),
-    userId
+    userId,
+    beneficiaryId
   )
   res.send(recommendations)
 })
 export default router
 
-router.post<{}, {}, { userId; tags: string[] }>('/mysteriousBox', cors(corsOptions), async (req, res) => {
-  const { tags, userId } = req.body
-  if (!tags) {
-    res.status(400).send('Debe enviar tags como parametro')
-    return
-  }
-  const gift = await recommendationsService.getMysteriousGift(userId, tags)
+router.post<{}, {}, { userId; tags: string[]; beneficiaryId: number }>(
+  '/mysteriousBox',
+  cors(corsOptions),
+  async (req, res) => {
+    const { tags, userId, beneficiaryId } = req.body
+    if (!tags) {
+      res.status(400).send('Debe enviar tags como parametro')
+      return
+    }
+    const gift = await recommendationsService.getMysteriousGift(userId, tags, beneficiaryId)
 
-  res.send(gift)
-})
+    res.send(gift)
+  }
+)

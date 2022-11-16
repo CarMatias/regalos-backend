@@ -44,11 +44,11 @@ interface Result {
   image: string
 }
 class RecommendationsService {
-  async removeAlreadyBoughtGifts(gifts: Result[], userId: number): Promise<Result[]> {
+  async removeAlreadyBoughtGifts(gifts: Result[], userId: number, beneficiaryId: number): Promise<Result[]> {
     const { data } = await supabase
       .from<definitions['regalobeneficiario']>('regalobeneficiario')
       .select('*')
-      .eq('id_beneficiario', 1)
+      .eq('id_beneficiario', beneficiaryId)
       .eq('id_usuario', userId)
     const boughtGiftIds = data ?? []
     console.log(boughtGiftIds)
@@ -58,7 +58,8 @@ class RecommendationsService {
 
   async getMysteriousGift(
     userId: number,
-    tags: string[]
+    tags: string[],
+    beneficiaryId: number
   ): Promise<{
     id: number
     name: string
@@ -84,7 +85,7 @@ class RecommendationsService {
 
     const mappedData = regalos.data.filter((r) => r.beneficiarios.length == 0)
     const index = Math.floor(Math.random() * mappedData.length)
-    buyGiftService.buyGift(regalos.data[index].id, userId.toString())
+    buyGiftService.buyGift(regalos.data[index].id, userId.toString(), beneficiaryId)
     return mappedData.map(
       (e) =>
         ({
