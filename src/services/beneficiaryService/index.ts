@@ -14,6 +14,7 @@ class BeneficiaryService {
   }
   async getBeneficiarys(id_user:string) {
     console.log(id_user)
+    
     const { data: beneficiario, error } = await supabase.from('beneficiario').select('name,apellido,id').eq('id_user',id_user)
     console.log(beneficiario)
     return beneficiario
